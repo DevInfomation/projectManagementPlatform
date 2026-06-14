@@ -2,7 +2,10 @@ package devinfo.projectManagementPlatform.controllers;
 
 import devinfo.projectManagementPlatform.models.User;
 import devinfo.projectManagementPlatform.repositories.UserRepository;
+import devinfo.projectManagementPlatform.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +16,12 @@ import java.util.List;
 public class UserController {
     private final UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(path = "/createUser", method = RequestMethod.POST)
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.createUser(user));
     }
 
     @RequestMapping(path = "/fetchUsers", method = RequestMethod.GET)
