@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1/signup")
+@RequestMapping(path = "/api/v1/users")
 @AllArgsConstructor
 public class UserController {
     private final UserRepository userRepository;
