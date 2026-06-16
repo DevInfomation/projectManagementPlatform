@@ -12,23 +12,23 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User createUser(User user) {
-        if (user.getFirstName() == null) {
+        if (user.getFirstName() == null || user.getFirstName().isBlank()) {
             throw new IllegalArgumentException("Fill in the first name!");
         }
 
-        if (user.getLastName() == null) {
+        if (user.getLastName() == null || user.getLastName().isBlank()) {
             throw new IllegalArgumentException("Fill in the last name!");
         }
 
-        if (user.getEmail() == null) {
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
             throw new IllegalArgumentException("Email must be filled out!");
         }
 
-        if (user.getMobileNumber() == null) {
+        if (user.getMobileNumber() == null || user.getMobileNumber().isBlank()) {
             throw new IllegalArgumentException("Fill out the mobile number!");
         }
 
-        if (user.getPassword() == null) {
+        if (user.getPassword() == null || user.getPassword().isBlank()) {
             throw new IllegalArgumentException("Fill in your password!");
         }
 
