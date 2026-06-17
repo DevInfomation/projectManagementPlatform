@@ -1,6 +1,7 @@
 package devinfo.projectManagementPlatform.controllers;
 
 import devinfo.projectManagementPlatform.models.User;
+import devinfo.projectManagementPlatform.models.dtos.UserResponseDto;
 import devinfo.projectManagementPlatform.repositories.UserRepository;
 import devinfo.projectManagementPlatform.services.UserService;
 import lombok.AllArgsConstructor;
@@ -14,23 +15,22 @@ import java.util.List;
 @RequestMapping(path = "/api/v1/users")
 @AllArgsConstructor
 public class UserController {
-    private final UserRepository userRepository;
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @RequestMapping(path = "/createUser", method = RequestMethod.POST)
+    @PostMapping("/createUser")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.createUser(user));
     }
 
-    @RequestMapping(path = "/fetchUsers", method = RequestMethod.GET)
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    @GetMapping("/fetchUsers")
+    public ResponseEntity<List<UserResponseDto>> listOfUsers() {
+        return ResponseEntity.ok(userService.listOfUsers());
     }
 
-    @RequestMapping(path = "/fetchUser/{id}", method = RequestMethod.GET)
-    public User getUserById(@PathVariable Long id) {
-        return userRepository.getById(String.valueOf(id));
+    @GetMapping("/fetchUser/{id}")
+    public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUser(id));
     }
 }
