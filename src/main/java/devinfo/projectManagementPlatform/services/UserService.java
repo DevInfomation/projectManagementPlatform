@@ -1,17 +1,22 @@
 package devinfo.projectManagementPlatform.services;
 
 import devinfo.projectManagementPlatform.models.User;
+import devinfo.projectManagementPlatform.models.dtos.UserResponseDto;
 import devinfo.projectManagementPlatform.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
-    public User createUser(User user) {
+    private void checkTheUser(User user) {
         if (user.getFirstName() == null || user.getFirstName().isBlank()) {
             throw new IllegalArgumentException("Fill in the first name!");
         }
@@ -31,7 +36,39 @@ public class UserService {
         if (user.getPassword() == null || user.getPassword().isBlank()) {
             throw new IllegalArgumentException("Fill in your password!");
         }
+    }
+
+    public User createUser(User user) {
+        checkTheUser(user);
 
         return userRepository.save(user);
     }
+
+    public UserResponseDto getUser(Long id) {
+        User user = userRepository.findById(String.valueOf(id))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new UserResponseDto(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getMobileNumber()
+        );
+    }
+
+    public List<UserResponseDto> listOfUsers() {
+        List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .map(user -> new UserResponseDto(
+                        user.getId(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getEmail(),
+                        user.getMobileNumber()
+                )).toList();
+    }
+
+
 }
